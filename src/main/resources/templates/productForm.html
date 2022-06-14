@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<span style="color: #CC0000" th:text="${errorMsg}"></span>
+<form method="post" th:action="@{/products/save}" th:object="${productItem}">
+  <label>Name: </label><input type="text" th:field="*{name}">
+  <label>Price: </label><input type="text" th:field="*{price}">
+  <label>Quantity: </label><input type="text" th:field="*{quantity}"><br>
+  <label>Description: </label><textarea th:field="*{description}"></textarea>
+  <button type="submit">Save</button>
+  <input type="hidden" th:field="*{id}">
+</form>
+</body>
+</html>

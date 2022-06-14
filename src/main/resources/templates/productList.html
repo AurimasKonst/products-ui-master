@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<a href="/auth/logout">[Log Out]</a>
+<br>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Actions</th>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <form method="get" th:action="@{/products}">
+        Id: <input type="text" name="id" th:value="${searchCriteriaId}">
+        Name: <input type="text" name="name" th:value="${searchCriteriaName}">
+        <input type="submit" value="Search">
+        <input type="reset" value="Reset" onclick="window.location.href='/products'">
+      </form>
+    </td>
+  </tr>
+  <tr th:each="item : ${productItems}">
+    <td th:text="${item.id}">
+    <td th:text="${item.name}">
+    <td th:text="${item.price}">
+    <td th:text="${item.quantity}">
+    <td>
+      <a th:href="@{'/products/' + ${item.id}}">Edit</a>
+      <a th:href="@{'/products/delete?id=' + ${item.id}}" onclick="return confirm('Are you sure?')">Delete</a>
+  </td>
+  </tr>
+</table>
+<a th:href="@{/products/add}"><button>[+] Add New</button></a>
+</body>
+</html>
