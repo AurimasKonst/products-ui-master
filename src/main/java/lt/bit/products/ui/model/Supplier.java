@@ -1,14 +1,7 @@
-package lt.bit.products.ui.service.domain;
+package lt.bit.products.ui.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+public class Supplier {
 
-@Entity
-@Table(name = "suppliers")
-public class SupplierEntity {
-
-  @Id
   private int id;
   private String name;
   private String companyCode;

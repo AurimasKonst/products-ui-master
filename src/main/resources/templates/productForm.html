@@ -7,7 +7,12 @@
 <form method="post" th:action="@{/products/save}" th:object="${productItem}">
   <label>Name: </label><input type="text" th:field="*{name}">
   <label>Price: </label><input type="text" th:field="*{price}">
-  <label>Quantity: </label><input type="text" th:field="*{quantity}"><br>
+  <label>Quantity: </label><input type="text" th:field="*{quantity}">
+  <label>Supplier: </label>
+  <select th:field="*{supplierId}">
+    <option th:each="supplierItem : ${suppliers}" th:value="${supplierItem.id}" th:text="${supplierItem.name}"></option>
+  </select>
+  <br>
   <label>Description: </label><textarea th:field="*{description}"></textarea>
   <button type="submit">Save</button>
   <input type="hidden" th:field="*{id}">

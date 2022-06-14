@@ -10,6 +10,7 @@ public class Product {
   private BigDecimal price;
   private double quantity;
   private String description;
+  private UUID supplierId;
 
   public UUID getId() {
     return id;
@@ -49,5 +50,13 @@ public class Product {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public UUID getSupplierId() {
+    return supplierId;
+  }
+
+  public void setSupplierId(UUID supplierId) {
+    this.supplierId = supplierId;
   }
 }

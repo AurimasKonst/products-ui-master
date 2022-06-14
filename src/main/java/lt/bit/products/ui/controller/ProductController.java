@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import lt.bit.products.ui.model.Product;
 import lt.bit.products.ui.service.ProductService;
+import lt.bit.products.ui.service.SupplierService;
 import lt.bit.products.ui.service.UserService;
 import lt.bit.products.ui.service.error.ProductValidator;
 import lt.bit.products.ui.service.error.ValidationException;
@@ -25,13 +26,16 @@ class ProductController {
 
   private final ProductService service;
   private final UserService userService;
+  private final SupplierService supplierService;
   private final ProductValidator validator;
   private final MessageSource messages;
 
-  ProductController(ProductService service, UserService userService, ProductValidator validator,
+  ProductController(ProductService service, UserService userService,
+      SupplierService supplierService, ProductValidator validator,
       MessageSource messages) {
     this.service = service;
     this.userService = userService;
+    this.supplierService = supplierService;
     this.validator = validator;
     this.messages = messages;
   }
@@ -64,6 +68,7 @@ class ProductController {
       return "login";
     }
     model.addAttribute("productItem", service.getProduct(id));
+    model.addAttribute("suppliers", supplierService.getSuppliers());
     return "productForm";
   }
 
