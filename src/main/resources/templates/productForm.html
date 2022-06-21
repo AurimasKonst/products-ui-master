@@ -10,6 +10,7 @@
   <label>Quantity: </label><input type="text" th:field="*{quantity}">
   <label>Supplier: </label>
   <select th:field="*{supplierId}">
+    <option th:value="${null}"></option>
     <option th:each="supplierItem : ${suppliers}" th:value="${supplierItem.id}" th:text="${supplierItem.name}"></option>
   </select>
   <br>

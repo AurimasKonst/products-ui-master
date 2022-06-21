@@ -23,9 +23,9 @@ public class ProductService {
   private final ProductRepository repository;
   private final ModelMapper mapper;
 
-  public ProductService(ProductRepository repository) {
+  public ProductService(ProductRepository repository, ModelMapper mapper) {
     this.repository = repository;
-    mapper = new ModelMapper();
+    this.mapper = mapper;
   }
 
   public List<Product> getProducts() {
