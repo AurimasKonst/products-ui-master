@@ -2,8 +2,14 @@ package lt.bit.products.ui.service;
 
 import java.util.List;
 import lt.bit.products.ui.model.Supplier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface SupplierService {
+@Service
+@Transactional
+public class SupplierService {
 
-  List<Supplier> getSuppliers();
+  public List<Supplier> getSuppliers() {
+    return List.of();
+  }
 }
