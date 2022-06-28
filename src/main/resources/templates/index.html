@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html>
-<head>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
 <body>
-  <a href="/auth/login">[Log In]</a>
-<!--  <a href="/products">Products</a>-->
+  <header th:insert="fragments/navbar.html"></header>
 </body>
 </html>

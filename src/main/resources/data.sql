@@ -18,6 +18,9 @@ CREATE TABLE products (
     quantity NUMERIC(5, 2),
     description VARCHAR(255),
     supplier_id UUID,
+    image_name VARCHAR(50),
+    image_content_type VARCHAR(20),
+    image_file_contents BLOB(10M),
     FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
 );
 
@@ -47,3 +50,5 @@ CREATE TABLE users (
 );
 
 INSERT INTO users VALUES (1, 'admin', '123', 'ADMIN', 'ACTIVE', '2022-05-30', LOCALTIMESTAMP());
+INSERT INTO users VALUES (2, 'a1', 'a', 'USER', 'ACTIVE', '2022-06-09', NULL);
+INSERT INTO users VALUES (3, 'b2', 'b', 'USER', 'ACTIVE', '2022-06-09', NULL);

@@ -1,17 +1,27 @@
 package lt.bit.products.ui.model;
 
+import java.util.UUID;
+
 public class Supplier {
 
-  private int id;
+  private UUID id;
   private String name;
   private String companyCode;
   private String vatCode;
 
-  public int getId() {
+  public Supplier(UUID id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public Supplier() {
+  }
+
+  public UUID getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 

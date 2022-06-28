@@ -2,6 +2,7 @@ package lt.bit.products.ui.controller;
 
 import static org.springframework.util.StringUtils.hasLength;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -13,6 +14,9 @@ import lt.bit.products.ui.service.UserService;
 import lt.bit.products.ui.service.error.ProductValidator;
 import lt.bit.products.ui.service.error.ValidationException;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +24,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 class ProductController {
@@ -72,30 +78,53 @@ class ProductController {
     return "productForm";
   }
 
+  @GetMapping("/products/{id}/image.png")
+  ResponseEntity<byte[]> getProductImage(@PathVariable UUID id) {
+    Product product = service.getProduct(id);
+    HttpHeaders headers = new HttpHeaders();
+    headers.add(HttpHeaders.CONTENT_TYPE, product.getImageContentType());
+    return new ResponseEntity<>(product.getImageFileContents(), headers, HttpStatus.OK);
+  }
+
   @GetMapping("/products/add")
   String addProduct(Model model) {
     if (!userService.isAuthenticated()) {
       return "login";
     }
     model.addAttribute("productItem", new Product());
+    model.addAttribute("suppliers", supplierService.getSuppliers());
     return "productForm";
   }
 
   @PostMapping("/products/save")
-  String saveProduct(@ModelAttribute Product product, Model model) throws ValidationException {
+  String saveProduct(@ModelAttribute Product product,
+      @RequestPart(name = "imageFile", required = false) MultipartFile file, Model model)
+      throws ValidationException {
+
     try {
       validator.validate(product);
+      if (file != null && !file.isEmpty()) {
+        validator.validate(file);
+        product.setImageName(file.getOriginalFilename());
+        product.setImageContentType(file.getContentType());
+        product.setImageFileContents(file.getBytes());
+      }
     } catch (ValidationException e) {
       model.addAttribute("errorMsg",
           messages.getMessage("validation.error." + e.getCode(), e.getParams(),
               Locale.getDefault()));
       model.addAttribute("productItem", product);
       return "productForm";
+    } catch (IOException ioe) {
+      model.addAttribute("errorMsg",
+          messages.getMessage("system.error.FILE_UPLOAD", null, Locale.getDefault()));
+      model.addAttribute("productItem", product);
+      return "productForm";
     }
+
     service.saveProduct(product);
     return "redirect:/products";
   }
-
 
   @GetMapping("/products/delete")
   String deleteProduct(@RequestParam UUID id) {

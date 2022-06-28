@@ -1,5 +1,6 @@
 package lt.bit.products.ui.service.domain;
 
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,16 +10,16 @@ import javax.persistence.Table;
 public class SupplierEntity {
 
   @Id
-  private int id;
+  private UUID id;
   private String name;
   private String companyCode;
   private String vatCode;
 
-  public int getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 

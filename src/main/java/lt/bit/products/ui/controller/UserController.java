@@ -1,7 +1,9 @@
 package lt.bit.products.ui.controller;
 
+import java.util.List;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
+import lt.bit.products.ui.model.User;
 import lt.bit.products.ui.service.UserService;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,7 @@ class UserController {
   @GetMapping("/auth/login")
   String loginForm() {
     if (userService.isAuthenticated()) {
-      return "redirect:/products";
+      return "redirect:/";
     }
     return "login";
   }
@@ -35,7 +37,7 @@ class UserController {
     userService.login(username, password);
 
     if (userService.isAuthenticated()) {
-      return "redirect:/products";
+      return "redirect:/";
     }
     model.addAttribute("errorMsg",
         messages.getMessage("login.error.INVALID_CREDENTIALS", null, Locale.getDefault()));
@@ -46,5 +48,17 @@ class UserController {
   String logout() {
     userService.logout();
     return "login";
+  }
+
+  @GetMapping("/users")
+  String showSuppliers(Model model) {
+    if (!userService.isAuthenticated()) {
+      return "login";
+    }
+
+    List<User> users = userService.getUsers();
+
+    model.addAttribute("userItems", users);
+    return "userList";
   }
 }

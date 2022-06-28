@@ -23,9 +23,9 @@ public class ProductService {
   private final ProductRepository repository;
   private final ModelMapper mapper;
 
-  public ProductService(ProductRepository repository) {
+  public ProductService(ProductRepository repository, ModelMapper mapper) {
     this.repository = repository;
-    mapper = new ModelMapper();
+    this.mapper = mapper;
   }
 
   public List<Product> getProducts() {
@@ -33,6 +33,10 @@ public class ProductService {
     // @formatter:off
     return mapper.map(products, new TypeToken<List<Product>>() {}.getType());
     // @formatter:on
+  }
+
+  public long countProducts() {
+    return repository.count();
   }
 
   public void saveProduct(Product product) throws ValidationException {
