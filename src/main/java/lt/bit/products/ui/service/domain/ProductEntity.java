@@ -29,6 +29,7 @@ public class ProductEntity implements Serializable {
   )
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
+  private String externalId;
 
   @Column(name = "name")
   private String name;
@@ -47,6 +48,15 @@ public class ProductEntity implements Serializable {
 
   public void setId(UUID id) {
     this.id = id;
+  }
+
+  public String getExternalId() {
+    return externalId;
+  }
+
+  public ProductEntity setExternalId(String externalId) {
+    this.externalId = externalId;
+    return this;
   }
 
   public String getName() {

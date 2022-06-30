@@ -13,6 +13,7 @@ INSERT INTO suppliers (id, name) VALUES ('4fe4a5a6-6e99-40bc-a6f2-707f0f53a54c',
 
 CREATE TABLE products (
     id UUID PRIMARY KEY,
+    external_id VARCHAR(50),
     name VARCHAR(50) NOT NULL,
     price NUMERIC(20, 2),
     quantity NUMERIC(5, 2),
