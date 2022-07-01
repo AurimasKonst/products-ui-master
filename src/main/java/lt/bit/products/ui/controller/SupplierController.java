@@ -1,10 +1,10 @@
 package lt.bit.products.ui.controller;
 
+import static lt.bit.products.ui.controller.ControllerBase.ADMIN_PATH;
+import static lt.bit.products.ui.controller.SupplierController.SUPPLIERS_PATH;
+
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-import lt.bit.products.ui.model.Product;
 import lt.bit.products.ui.model.Supplier;
 import lt.bit.products.ui.service.SupplierService;
 import lt.bit.products.ui.service.UserService;
@@ -15,19 +15,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class SupplierController {
+@RequestMapping(ADMIN_PATH + SUPPLIERS_PATH)
+class SupplierController extends ControllerBase {
 
+  protected static final String SUPPLIERS_PATH = "/suppliers";
   private final SupplierService service;
   private final UserService userService;
 
-  public SupplierController(SupplierService service, UserService userService) {
+  SupplierController(SupplierService service, UserService userService) {
     this.service = service;
     this.userService = userService;
   }
 
-  @GetMapping("/suppliers")
+  @GetMapping
   String showSuppliers(Model model) {
     if (!userService.isAuthenticated()) {
       return "login";
@@ -39,7 +42,7 @@ public class SupplierController {
     return "supplierList";
   }
 
-  @GetMapping("/suppliers/{id}")
+  @GetMapping("/{id}")
   String editSupplier(@PathVariable UUID id, Model model) {
     if (!userService.isAuthenticated()) {
       return "login";
@@ -48,7 +51,7 @@ public class SupplierController {
     return "supplierForm";
   }
 
-  @PostMapping("/suppliers/save")
+  @PostMapping("/save")
   String saveSupplier(@ModelAttribute Supplier supplier, Model model) throws ValidationException {
 /*    try {
       validator.validate(product);
@@ -60,6 +63,6 @@ public class SupplierController {
       return "productForm";
     }*/
     service.saveSupplier(supplier);
-    return "redirect:/suppliers";
+    return "redirect:" + ADMIN_PATH + SUPPLIERS_PATH;
   }
 }
