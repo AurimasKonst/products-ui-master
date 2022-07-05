@@ -70,7 +70,7 @@ class ProductController extends ControllerBase {
     model.addAttribute("searchCriteriaId", id);
     model.addAttribute("searchCriteriaName", name);
     model.addAttribute("productItems", products);
-    return "productList";
+    return "admin/productList";
   }
 
   @GetMapping("/{id}")
@@ -80,7 +80,7 @@ class ProductController extends ControllerBase {
     }
     model.addAttribute("productItem", service.getProduct(id));
     model.addAttribute("suppliers", supplierService.getSuppliers());
-    return "productForm";
+    return "admin/productForm";
   }
 
   @GetMapping("/{id}/image.png")
@@ -98,7 +98,7 @@ class ProductController extends ControllerBase {
     }
     model.addAttribute("productItem", new Product());
     model.addAttribute("suppliers", supplierService.getSuppliers());
-    return "productForm";
+    return "admin/productForm";
   }
 
   @PostMapping("/save")
@@ -119,12 +119,12 @@ class ProductController extends ControllerBase {
           messages.getMessage("validation.error." + e.getCode(), e.getParams(),
               Locale.getDefault()));
       model.addAttribute("productItem", product);
-      return "productForm";
+      return "admin/productForm";
     } catch (IOException ioe) {
       model.addAttribute("errorMsg",
           messages.getMessage("system.error.FILE_UPLOAD", null, Locale.getDefault()));
       model.addAttribute("productItem", product);
-      return "productForm";
+      return "admin/productForm";
     }
 
     service.saveProduct(product);

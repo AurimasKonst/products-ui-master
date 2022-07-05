@@ -32,6 +32,6 @@ class UserController extends ControllerBase {
     List<User> users = userService.getUsers();
 
     model.addAttribute("userItems", users);
-    return "userList";
+    return "admin/userList";
   }
 }

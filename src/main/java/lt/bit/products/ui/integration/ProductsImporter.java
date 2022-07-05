@@ -24,7 +24,7 @@ class ProductsImporter {
     this.repository = repository;
   }
 
-  @Scheduled(fixedRate = 30000L)
+//  @Scheduled(fixedRate = 30000L)
   void importProducts() {
     if (noNewProducts()) {
       return;
