@@ -1,5 +1,8 @@
 package lt.bit.products.ui.controller;
 
+import java.util.List;
+import lt.bit.products.ui.model.CartItem;
+import lt.bit.products.ui.service.CartService;
 import lt.bit.products.ui.service.ProductService;
 import lt.bit.products.ui.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -11,14 +14,19 @@ class IndexController extends ControllerBase {
 
   private UserService userService;
   private ProductService productService;
+  private CartService cartService;
 
-  IndexController(UserService userService, ProductService productService) {
+  IndexController(UserService userService, ProductService productService, CartService cartService) {
     this.userService = userService;
     this.productService = productService;
+    this.cartService = cartService;
   }
 
   @GetMapping("/")
   String index(Model model) {
+    List<CartItem> cartItems = cartService.getCartItems();
+    model.addAttribute("totalCartItems", cartItems.stream().mapToInt(CartItem::getCount).sum());
+    model.addAttribute("cartItems", cartItems);
     model.addAttribute("products", productService.getProducts());
     return "index";
   }
