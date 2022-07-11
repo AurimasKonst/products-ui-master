@@ -25,7 +25,8 @@ class IndexController extends ControllerBase {
   @GetMapping("/")
   String index(Model model) {
     List<CartItem> cartItems = cartService.getCartItems();
-    model.addAttribute("totalCartItems", cartItems.stream().mapToInt(CartItem::getCount).sum());
+    model.addAttribute("cartAmount", cartService.getCartAmount());
+    model.addAttribute("totalCartItems", cartService.getTotalItems());
     model.addAttribute("cartItems", cartItems);
     model.addAttribute("products", productService.getProducts());
     return "index";
@@ -36,6 +37,6 @@ class IndexController extends ControllerBase {
     if (!userService.isAuthenticated()) {
       return "login";
     }
-    return "admin/index";
+    return userService.isAdmin() ? "admin/index" : "index";
   }
 }

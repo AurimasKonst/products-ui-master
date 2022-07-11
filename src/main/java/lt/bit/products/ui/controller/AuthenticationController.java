@@ -23,9 +23,13 @@ class AuthenticationController extends ControllerBase {
   @GetMapping("/auth/login")
   String loginForm() {
     if (userService.isAuthenticated()) {
-      return "redirect:/";
+      return redirectToHome();
     }
     return "login";
+  }
+
+  private String redirectToHome() {
+    return "redirect:" + (userService.isAdmin() ? "/admin" : "/");
   }
 
   @PostMapping("/auth/login")
@@ -35,7 +39,7 @@ class AuthenticationController extends ControllerBase {
     userService.login(username, password);
 
     if (userService.isAuthenticated()) {
-      return "redirect:/";
+      return redirectToHome();
     }
     model.addAttribute("errorMsg",
         messages.getMessage("login.error.INVALID_CREDENTIALS", null, Locale.getDefault()));
