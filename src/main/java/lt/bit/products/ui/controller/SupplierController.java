@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping(ADMIN_PATH + SUPPLIERS_PATH)
@@ -51,6 +52,15 @@ class SupplierController extends ControllerBase {
     return "admin/supplierForm";
   }
 
+  @GetMapping("/add")
+  String addSupplier(Model model) {
+    if (!userService.isAuthenticated()) {
+      return "login";
+    }
+    model.addAttribute("supplierItem", new Supplier());
+    return "admin/supplierForm";
+  }
+
   @PostMapping("/save")
   String saveSupplier(@ModelAttribute Supplier supplier, Model model) throws ValidationException {
 /*    try {
@@ -63,6 +73,15 @@ class SupplierController extends ControllerBase {
       return "productForm";
     }*/
     service.saveSupplier(supplier);
+    return "redirect:" + ADMIN_PATH + SUPPLIERS_PATH;
+  }
+
+  @GetMapping("/delete")
+  String deleteSupplier(@RequestParam UUID id) {
+    if (!userService.isAuthenticated()) {
+      return "login";
+    }
+    service.deleteSupplier(id);
     return "redirect:" + ADMIN_PATH + SUPPLIERS_PATH;
   }
 }

@@ -83,4 +83,8 @@ public class UserService {
     return mapper.map(users, new TypeToken<List<User>>() {}.getType());
     // @formatter:on
   }
+
+  public User getUser(Integer id) {
+    return repository.findById(id).map(u -> mapper.map(u, User.class)).orElseThrow();
+  }
 }

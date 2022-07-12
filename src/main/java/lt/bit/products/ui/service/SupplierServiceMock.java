@@ -25,4 +25,12 @@ public class SupplierServiceMock implements SupplierService {
   public void saveSupplier(Supplier supplier) {
     MOCKED_SUPPLIERS.add(supplier);
   }
+
+  @Override
+  public void deleteSupplier(UUID id) {
+    MOCKED_SUPPLIERS.stream()
+        .filter(s -> s.getId().equals(id))
+        .findAny()
+        .ifPresent(MOCKED_SUPPLIERS::remove);
+  }
 }

@@ -11,4 +11,6 @@ public interface SupplierService {
   Supplier getSupplier(UUID id);
 
   void saveSupplier(Supplier supplier);
+
+  void deleteSupplier(UUID id);
 }

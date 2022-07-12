@@ -3,6 +3,7 @@ package lt.bit.products.ui.configuration;
 import lt.bit.products.ui.service.SupplierService;
 import lt.bit.products.ui.service.SupplierServiceH2;
 import lt.bit.products.ui.service.SupplierServiceMock;
+import lt.bit.products.ui.service.domain.ProductRepository;
 import lt.bit.products.ui.service.domain.SupplierRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -24,8 +25,9 @@ class GlobalConfiguration implements WebMvcConfigurer {
 
   @Primary
   @Bean("supplierServiceH2")
-  SupplierService supplierServiceH2(SupplierRepository repository, ModelMapper mapper) {
-    return new SupplierServiceH2(repository, mapper);
+  SupplierService supplierServiceH2(SupplierRepository repository, ProductRepository productRepository,
+      ModelMapper mapper) {
+    return new SupplierServiceH2(repository, productRepository, mapper);
   }
 
   @Bean("supplierServiceMock")
