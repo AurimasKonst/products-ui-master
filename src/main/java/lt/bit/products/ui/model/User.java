@@ -9,7 +9,7 @@ public class User {
 
   private Integer id;
   private String username;
-  private String password;
+  private String password = "111";
   private UserRole role;
   private UserStatus status;
   private LocalDate createdAt;
