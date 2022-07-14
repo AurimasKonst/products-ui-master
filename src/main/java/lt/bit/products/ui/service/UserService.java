@@ -1,6 +1,7 @@
 package lt.bit.products.ui.service;
 
 import java.security.AccessControlException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lt.bit.products.ui.model.User;
@@ -38,6 +39,7 @@ public class UserService {
       setAdmin(u.getRole() == UserRole.ADMIN);
       setUserId(u.getId());
       setUserName(u.getUsername());
+      repository.updateLastLoginTime(LocalDateTime.now());
     });
   }
 
@@ -88,7 +90,11 @@ public class UserService {
   }
 
   public User getUser(Integer id) {
-    return repository.findById(id).map(u -> mapper.map(u, User.class)).orElseThrow();
+    Optional<UserEntity> user = repository.findById(id);
+    if (user.stream().anyMatch(u -> u.getRole() == UserRole.ADMIN)) {
+      throw new AccessControlException("permission.error.ADMIN_USER_EDITING");
+    }
+    return user.map(u -> mapper.map(u, User.class)).orElseThrow();
   }
 
   public void saveUser(User user) {
@@ -97,7 +103,7 @@ public class UserService {
 
   public void deleteUser(Integer id) {
     Optional<UserEntity> user = repository.findById(id);
-    if (user.filter(u -> u.getRole() == UserRole.ADMIN).isPresent()) {
+    if (user.stream().anyMatch(u -> u.getRole() == UserRole.ADMIN)) {
       throw new AccessControlException("permission.error.ADMIN_USER_DELETION");
     }
     repository.deleteById(id);

@@ -10,9 +10,11 @@ public class User {
   private Integer id;
   private String username;
   private String password = "111";
+  private String confirmedPassword = "111";
   private UserRole role;
   private UserStatus status;
   private LocalDate createdAt;
+  private LocalDateTime editedAt;
   private LocalDateTime loggedInAt;
 
   public Integer getId() {
@@ -39,6 +41,14 @@ public class User {
     this.password = password;
   }
 
+  public String getConfirmedPassword() {
+    return confirmedPassword;
+  }
+
+  public void setConfirmedPassword(String confirmedPassword) {
+    this.confirmedPassword = confirmedPassword;
+  }
+
   public UserRole getRole() {
     return role;
   }
@@ -61,6 +71,14 @@ public class User {
 
   public void setCreatedAt(LocalDate createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getEditedAt() {
+    return editedAt;
+  }
+
+  public void setEditedAt(LocalDateTime editedAt) {
+    this.editedAt = editedAt;
   }
 
   public LocalDateTime getLoggedInAt() {

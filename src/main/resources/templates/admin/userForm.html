@@ -27,6 +27,14 @@
           <option th:each="st : ${statuses}" th:value="${st}" th:text="${st.name()}"></option>
         </select>
       </div>
+      <div class="col-auto">
+        <label for="password" class="col-sm-2 col-form-label">Password:</label>
+        <input type="text" class="form-control" id="password" th:field="*{password}">
+      </div>
+      <div class="col-auto">
+        <label for="confirmedPassword" class="col-sm-2 col-form-label">Confirm Password:</label>
+        <input type="text" class="form-control" id="confirmedPassword" th:field="*{confirmedPassword}">
+      </div>
     </div>
     <div class="row g-3"><br><br></div>
     <div class="row g-3">
