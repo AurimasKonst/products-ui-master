@@ -58,4 +58,9 @@ class CustomerSiteController {
     mv.addObject("cartItems", cartService.getCartItems());
     return mv;
   }
+
+  @GetMapping("register")
+  String showRegistrationForm() {
+    return "registrationForm";
+  }
 }

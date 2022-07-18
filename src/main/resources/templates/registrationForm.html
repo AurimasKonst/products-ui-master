@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html"></head>
+<body>
+<header th:insert="fragments/navbar.html"></header>
+
+<div class="container">
+  <span style="color: #CC0000" th:text="${errorMsg}"></span>
+
+  <form method="post" th:action="@{/register}">
+    <div class="row g-3">
+      <div class="col-auto">
+        <label for="name" class="col-sm-2 col-form-label">Name:</label>
+        <input type="text" class="form-control" id="name" >
+      </div>
+      <div class="col-auto">
+        <label for="address" class="col-sm-2 col-form-label">Address:</label>
+        <input type="text" class="form-control" id="address" >
+      </div>
+      <div class="col-auto">
+        <label for="name" class="col-sm-2 col-form-label">Email:</label>
+        <input type="text" class="form-control" id="email" >
+      </div>
+      <div class="col-auto">
+        <label for="name" class="col-sm-2 col-form-label">Phone:</label>
+        <input type="text" class="form-control" id="phone" >
+      </div>
+      <div class="col-auto">
+        <label for="username" class="col-sm-2 col-form-label">Username:</label>
+        <input type="text" class="form-control" id="username" >
+      </div>
+      <div class="col-auto">
+        <label for="password" class="col-sm-2 col-form-label">Password:</label>
+        <input type="password" class="form-control" id="password">
+      </div>
+      <div class="col-auto">
+        <label for="confirmedPassword" class="col-sm-2 col-form-label">Confirm Password:</label>
+        <input type="password" class="form-control" id="confirmedPassword" >
+      </div>
+    </div>
+    <div class="row g-3"><br><br></div>
+    <div class="row g-3">
+      <div class="col-auto">
+        <button class="btn btn-primary mb-3" type="submit">Save</button>
+        <button class="btn btn-secondary mb-3" type="button" onclick="history.back()">Back</button>
+        <input type="hidden" >
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>
