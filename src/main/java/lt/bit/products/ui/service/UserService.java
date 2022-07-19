@@ -8,6 +8,7 @@ import lt.bit.products.ui.model.User;
 import lt.bit.products.ui.service.domain.UserEntity;
 import lt.bit.products.ui.service.domain.UserRepository;
 import lt.bit.products.ui.service.domain.UserRole;
+import lt.bit.products.ui.service.domain.UserStatus;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
@@ -107,5 +108,9 @@ public class UserService {
       throw new AccessControlException("permission.error.ADMIN_USER_DELETION");
     }
     repository.deleteById(id);
+  }
+
+  public void changeStatus(UserStatus newStatus, Integer userId) {
+    repository.updateStatus(newStatus, userId);
   }
 }

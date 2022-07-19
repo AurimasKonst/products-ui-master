@@ -51,6 +51,15 @@ CREATE TABLE users (
     last_login_ts TIMESTAMP
 );
 
+CREATE TABLE user_profile (
+    user_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    address VARCHAR(100) NOT NULL,
+    email  VARCHAR(50) NOT NULL,
+    phone  VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 INSERT INTO users VALUES (1, 'admin', '123', 'ADMIN', 'ACTIVE', '2022-05-30', NULL, NULL);
 INSERT INTO users VALUES (2, 'a1', 'a', 'USER', 'ACTIVE', '2022-06-09', NULL, LOCALTIMESTAMP());
 INSERT INTO users VALUES (3, 'b2', 'b', 'USER', 'ACTIVE', '2022-06-09', LOCALTIMESTAMP(), NULL);

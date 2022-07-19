@@ -83,8 +83,11 @@
   });
 </script>
 <div class="container">
-  <div class="row">
-    <a style="width: 80px" href="/login">Sign In</a> | <a style="width: 80px" href="/register">Sign Up</a>
+  <div class="row" th:if="${authenticated}">
+    <a style="width: 100px" href="/auth/logout">Sign Out</a>
+  </div>
+  <div class="row" th:unless="${authenticated}">
+    <a style="width: 80px" href="/auth/login">Sign In</a> | <a style="width: 80px" href="/register">Sign Up</a>
   </div>
   <br>
   <div class="row">
@@ -115,7 +118,9 @@
           </a>
         </li>
       </th:block>
+      <li style="list-style-type: none"><a href="/checkout"><button type="button" class="btn btn-info" style="color: whitesmoke">Checkout</button></a></li>
     </ul>
+
   </div>
   <div class="row">
     <div class="col" th:each="item : ${products}">

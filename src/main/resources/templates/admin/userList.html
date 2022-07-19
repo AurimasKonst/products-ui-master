@@ -26,6 +26,8 @@
       <td th:text="${#temporals.format(item.loggedInAt, 'yyyy-MM-dd HH:mm')}">
 
       <td th:if="${item.role.toString()} == 'USER'">
+        <a th:unless="${item.status.toString() == 'ACTIVE'}" th:href="@{'/admin/users/activate?id=' + ${item.id}}" style="color: forestgreen" onclick="return confirm('Are you sure?')">Activate</a>
+        <a th:unless="${item.status.toString() == 'BLOCKED'}" th:href="@{'/admin/users/block?id=' + ${item.id}}" style="color: darkred" onclick="return confirm('Are you sure?')">Block</a>
         <a th:href="@{'/admin/users/' + ${item.id}}">Edit</a>
         <a th:href="@{'/admin/users/delete?id=' + ${item.id}}" onclick="return confirm('Are you sure?')">Delete</a>
       </td>
