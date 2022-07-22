@@ -2,24 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head.html"></head>
 <body>
-<header th:insert="fragments/admin_navbar.html"></header>
-
 <div class="container">
+  <div th:replace="fragments/user_navbar.html :: navbarParams(authenticated=${authenticated}, currentUsername=${currentUsername})"></div>
+  <br>
   <span style="color: #CC0000" th:text="${errorMsg}"></span>
-
-  <form method="post" th:action="@{/admin/suppliers/save}" th:object="${supplierItem}">
+  <form method="post" th:action="@{/profile}" th:object="${profileData}">
     <div class="row g-3">
       <div class="col-auto">
         <label for="name" class="col-sm-2 col-form-label">Name:</label>
         <input type="text" class="form-control" id="name" th:field="*{name}">
       </div>
       <div class="col-auto">
-        <label for="price" class="col-sm-2 col-form-label">Code:</label>
-        <input type="text" class="form-control" id="price" th:field="*{companyCode}">
+        <label for="address" class="col-sm-2 col-form-label">Address:</label>
+        <input type="text" class="form-control" id="address" th:field="*{address}">
       </div>
       <div class="col-auto">
-        <label for="quantity" class="col-sm-2 col-form-label">VAT:</label>
-        <input type="text" class="form-control" id="quantity" th:field="*{vatCode}">
+        <label for="email" class="col-sm-2 col-form-label">Email:</label>
+        <input type="text" class="form-control" id="email" th:field="*{email}">
+      </div>
+      <div class="col-auto">
+        <label for="phone" class="col-sm-2 col-form-label">Phone:</label>
+        <input type="text" class="form-control" id="phone" th:field="*{phone}">
       </div>
     </div>
     <div class="row g-3"><br><br></div>
@@ -27,7 +30,7 @@
       <div class="col-auto">
         <button class="btn btn-primary mb-3" type="submit">Save</button>
         <button class="btn btn-secondary mb-3" type="button" onclick="history.back()">Back</button>
-        <input type="hidden" th:field="*{id}">
+        <input type="hidden" >
       </div>
     </div>
   </form>

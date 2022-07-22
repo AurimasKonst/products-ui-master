@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head.html"></head>
 <body>
-  <header th:insert="fragments/navbar.html"></header>
+  <header th:insert="fragments/admin_navbar.html"></header>
   <form method="get" style="margin-left: 2px" th:action="@{/admin/products}">
     Id: <input type="text" name="id" th:value="${searchCriteriaId}">&nbsp;&nbsp;
     Name: <input type="text" name="name" th:value="${searchCriteriaName}">

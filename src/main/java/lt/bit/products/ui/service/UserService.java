@@ -5,7 +5,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lt.bit.products.ui.model.User;
+import lt.bit.products.ui.model.UserProfile;
 import lt.bit.products.ui.service.domain.UserEntity;
+import lt.bit.products.ui.service.domain.UserProfileEntity;
+import lt.bit.products.ui.service.domain.UserProfileRepository;
 import lt.bit.products.ui.service.domain.UserRepository;
 import lt.bit.products.ui.service.domain.UserRole;
 import lt.bit.products.ui.service.domain.UserStatus;
@@ -21,15 +24,18 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class UserService {
 
   private final UserRepository repository;
+  private final UserProfileRepository profileRepository;
   private final ModelMapper mapper;
 
   private boolean authenticated;
   private boolean admin;
-  private Integer userId;
-  private String userName;
+  private Integer currentUserId;
+  private String currentUsername;
 
-  public UserService(UserRepository repository, ModelMapper mapper) {
+  public UserService(UserRepository repository,
+      UserProfileRepository profileRepository, ModelMapper mapper) {
     this.repository = repository;
+    this.profileRepository = profileRepository;
     this.mapper = mapper;
   }
 
@@ -38,8 +44,8 @@ public class UserService {
     user.ifPresent(u -> {
       setAuthenticated(true);
       setAdmin(u.getRole() == UserRole.ADMIN);
-      setUserId(u.getId());
-      setUserName(u.getUsername());
+      setCurrentUserId(u.getId());
+      setCurrentUsername(u.getUsername());
       repository.updateLastLoginTime(LocalDateTime.now());
     });
   }
@@ -47,8 +53,8 @@ public class UserService {
   public void logout() {
     setAuthenticated(false);
     setAdmin(false);
-    setUserId(null);
-    setUserName(null);
+    setCurrentUserId(null);
+    setCurrentUsername(null);
   }
 
   public boolean isAuthenticated() {
@@ -67,20 +73,20 @@ public class UserService {
     this.admin = admin;
   }
 
-  public Integer getUserId() {
-    return userId;
+  public Integer getCurrentUserId() {
+    return currentUserId;
   }
 
-  private void setUserId(Integer userId) {
-    this.userId = userId;
+  private void setCurrentUserId(Integer currentUserId) {
+    this.currentUserId = currentUserId;
   }
 
-  public String getUserName() {
-    return userName;
+  public String getCurrentUsername() {
+    return currentUsername;
   }
 
-  private void setUserName(String userName) {
-    this.userName = userName;
+  private void setCurrentUsername(String currentUsername) {
+    this.currentUsername = currentUsername;
   }
 
   public List<User> getUsers() {
@@ -98,8 +104,21 @@ public class UserService {
     return user.map(u -> mapper.map(u, User.class)).orElseThrow();
   }
 
+  public UserProfile getUserProfile(Integer userId) {
+    return mapper.map(profileRepository.findById(userId).orElseGet(UserProfileEntity::new), UserProfile.class);
+  }
+
+  public void saveUserProfile(UserProfile updatedProfile) {
+    UserProfileEntity profileEntity = mapper.map(updatedProfile, UserProfileEntity.class);
+    profileEntity.setUserId(getCurrentUserId());
+    profileRepository.save(profileEntity);
+  }
+
   public void saveUser(User user) {
-    repository.save(mapper.map(user, UserEntity.class));
+    UserEntity savedUser = repository.save(mapper.map(user, UserEntity.class));
+    UserProfileEntity profile = mapper.map(user.getProfile(), UserProfileEntity.class);
+    profile.setUserId(savedUser.getId());
+    profileRepository.save(profile);
   }
 
   public void deleteUser(Integer id) {

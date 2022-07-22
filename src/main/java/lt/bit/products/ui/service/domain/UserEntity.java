@@ -9,10 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
@@ -40,10 +37,6 @@ public class UserEntity {
 
   @Column(name = "last_login_ts")
   private LocalDateTime loggedInAt;
-
-  @OneToOne
-  @JoinColumn(name = "id")
-  private UserProfileEntity profile;
 
   public Integer getId() {
     return id;
@@ -117,13 +110,5 @@ public class UserEntity {
 
   public void setLoggedInAt(LocalDateTime loggedInAt) {
     this.loggedInAt = loggedInAt;
-  }
-
-  public UserProfileEntity getProfile() {
-    return profile;
-  }
-
-  public void setProfile(UserProfileEntity profile) {
-    this.profile = profile;
   }
 }

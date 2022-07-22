@@ -15,4 +15,4 @@
     </a>
   </li>
 </th:block>
-<li style="list-style-type: none"><a href="/checkout"><button type="button" class="btn btn-info" style="color: whitesmoke">Checkout</button></a></li>
+<li id="li_checkout" style="list-style-type: none; margin-top: 3px"><a th:if="${cartItems.size() > 0}" href="/cart/checkout"><button type="button" class="btn btn-info" style="color: whitesmoke">Checkout</button></a></li>
