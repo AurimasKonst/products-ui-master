@@ -1,18 +1,25 @@
 package lt.bit.products.ui.controller;
 
+import static java.util.stream.Collectors.toList;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 import lt.bit.products.ui.model.User;
 import lt.bit.products.ui.model.UserProfile;
 import lt.bit.products.ui.service.CartService;
+import lt.bit.products.ui.service.OrderService;
 import lt.bit.products.ui.service.UserService;
+import lt.bit.products.ui.service.domain.OrderEntity;
+import lt.bit.products.ui.service.domain.OrderItem;
 import lt.bit.products.ui.service.domain.UserRole;
 import lt.bit.products.ui.service.domain.UserStatus;
 import lt.bit.products.ui.service.error.UserValidator;
 import lt.bit.products.ui.service.error.ValidationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,19 +30,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 class CustomerSiteController {
 
-  private final static Logger LOG = LoggerFactory.getLogger(CustomerSiteController.class);
   private final CartService cartService;
+  private final OrderService orderService;
   private final UserService userService;
   private final UserValidator userValidator;
   private final MessageSource messages;
 
-  CustomerSiteController(CartService cartService, UserService userService,
-      UserValidator userValidator, MessageSource messages) {
+  CustomerSiteController(CartService cartService, OrderService orderService,
+      UserService userService, UserValidator userValidator, MessageSource messages) {
     this.cartService = cartService;
+    this.orderService = orderService;
     this.userService = userService;
     this.userValidator = userValidator;
     this.messages = messages;
@@ -88,6 +97,32 @@ class CustomerSiteController {
     model.addAttribute("authenticated", userService.isAuthenticated());
     model.addAttribute("currentUsername", userService.getCurrentUsername());
     return "checkoutForm";
+  }
+
+  @PostMapping("/cart/checkout")
+  String submitCheckoutForm(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    OrderEntity order = new OrderEntity();
+    String id = UUID.randomUUID().toString().substring(0, 18);
+    String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    order.setId(datePart + id.substring(8));
+    order.setCustomerName(request.getParameter("name"));
+    order.setCustomerAddress(request.getParameter("address"));
+    order.setCustomerEmail(request.getParameter("email"));
+    order.setCustomerPhone(request.getParameter("phone"));
+
+    List<OrderItem> items = cartService.getCartItems().stream()
+        .map(cartItem -> {
+          OrderItem item = new OrderItem();
+          item.setProductId(cartItem.getProductId());
+          item.setQuantity(cartItem.getCount());
+          return item;
+        })
+        .collect(toList());
+    order.setItems(items);
+    orderService.createOrder(order);
+    cartService.clearCartItems();
+    redirectAttributes.addFlashAttribute("successMsg", "Thank you! Your order has been placed.");
+    return "redirect:/";
   }
 
   @GetMapping("/register")

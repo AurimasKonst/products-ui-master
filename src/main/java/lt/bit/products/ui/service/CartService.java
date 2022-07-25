@@ -39,6 +39,10 @@ public class CartService {
         .collect(Collectors.toList());
   }
 
+  public void clearCartItems() {
+    cartItems.clear();
+  }
+
   public void removeFromCart(UUID productId) {
     cartItems.remove(productId);
   }

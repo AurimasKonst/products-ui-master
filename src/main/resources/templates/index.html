@@ -118,8 +118,8 @@
       </th:block>
       <li id="li_checkout" style="list-style-type: none; margin-top: 3px"><a th:if="${cartItems.size() > 0}" href="/cart/checkout"><button type="button" class="btn btn-info" style="color: whitesmoke">Checkout</button></a></li>
     </ul>
-
   </div>
+  <div th:if="${successMsg}" class="row"><span style="color: darkgreen" th:text="${successMsg}"></span></div>
   <div class="row">
     <div class="col" th:each="item : ${products}">
       <b><span th:text="${item.name}"></span></b><br>
