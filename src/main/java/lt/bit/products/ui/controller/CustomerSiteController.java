@@ -16,6 +16,7 @@ import lt.bit.products.ui.service.OrderService;
 import lt.bit.products.ui.service.UserService;
 import lt.bit.products.ui.service.domain.OrderEntity;
 import lt.bit.products.ui.service.domain.OrderItem;
+import lt.bit.products.ui.service.domain.OrderStatus;
 import lt.bit.products.ui.service.domain.UserRole;
 import lt.bit.products.ui.service.domain.UserStatus;
 import lt.bit.products.ui.service.error.UserValidator;
@@ -109,6 +110,7 @@ class CustomerSiteController {
     order.setCustomerAddress(request.getParameter("address"));
     order.setCustomerEmail(request.getParameter("email"));
     order.setCustomerPhone(request.getParameter("phone"));
+    order.setStatus(OrderStatus.NEW);
 
     List<OrderItem> items = cartService.getCartItems().stream()
         .map(cartItem -> {

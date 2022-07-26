@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -22,6 +24,9 @@ public class OrderEntity {
   private String customerPhone;
   private Integer userId;
   private BigDecimal totalAmount;
+
+  @Enumerated(EnumType.STRING)
+  private OrderStatus status;
 
   @ElementCollection
   @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
@@ -81,6 +86,14 @@ public class OrderEntity {
 
   public void setTotalAmount(BigDecimal totalAmount) {
     this.totalAmount = totalAmount;
+  }
+
+  public OrderStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(OrderStatus status) {
+    this.status = status;
   }
 
   public List<OrderItem> getItems() {

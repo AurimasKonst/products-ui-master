@@ -73,6 +73,7 @@ CREATE TABLE orders
     customer_phone   VARCHAR(50)  NOT NULL,
     user_id          INT,
     total_amount     NUMERIC(20, 2),
+    status           VARCHAR(10),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
