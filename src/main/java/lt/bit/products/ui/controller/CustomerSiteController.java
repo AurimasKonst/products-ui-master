@@ -111,6 +111,11 @@ class CustomerSiteController {
     order.setCustomerEmail(request.getParameter("email"));
     order.setCustomerPhone(request.getParameter("phone"));
     order.setStatus(OrderStatus.NEW);
+    order.setTotalAmount(cartService.getCartAmount());
+
+    if (userService.isAuthenticated()) {
+      order.setUserId(userService.getCurrentUserId());
+    }
 
     List<OrderItem> items = cartService.getCartItems().stream()
         .map(cartItem -> {
